@@ -1,26 +1,28 @@
 class PaymentService {
   async processPayment(orderId, paymentMethod, amount) {
-    // Placeholder for payment processing logic
-    // Integrate with payment gateway APIs here
+    // To‘lovni qayta ishlash logikasi
+    // Shu yerda to‘lov tizimi API larini integratsiya qilishingiz mumkin
 
-    console.log(`Processing payment for order ${orderId}`);
-    console.log(`Method: ${paymentMethod}, Amount: ${amount}`);
+    console.log(`Buyurtma ${orderId} uchun to‘lov amalga oshirilmoqda`);
+    console.log(`Usul: ${paymentMethod}, Miqdor: ${amount}`);
 
     return {
       success: true,
       transactionId: `TXN_${Date.now()}`,
-      message: "Payment processed successfully",
+      message: "To‘lov muvaffaqiyatli amalga oshirildi",
     };
   }
 
   async refundPayment(orderId, amount) {
-    // Placeholder for refund logic
-    console.log(`Refunding ${amount} for order ${orderId}`);
+    // Pulni qaytarish logikasi
+    console.log(
+      `${amount} miqdoridagi summa buyurtma ${orderId} uchun qaytarilmoqda`
+    );
 
     return {
       success: true,
       refundId: `REF_${Date.now()}`,
-      message: "Refund processed successfully",
+      message: "Qaytarish muvaffaqiyatli amalga oshirildi",
     };
   }
 }

@@ -8,7 +8,7 @@ const checkAdmin = async (userId) => {
 const requireAdmin = async (userId) => {
   const isAdmin = await checkAdmin(userId);
   if (!isAdmin) {
-    throw new Error("Unauthorized: Admin access required");
+    throw new Error("Ruxsat yo‘q: Admin huquqlari talab qilinadi");
   }
   return true;
 };

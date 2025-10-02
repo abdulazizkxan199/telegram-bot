@@ -1,8 +1,8 @@
 const adminMainKeyboard = {
   keyboard: [
-    ["📊 Statistics", "📦 Orders"],
-    ["➕ Add Product", "✏️ Edit Product"],
-    ["👥 Users", "⬅️ Back to User Mode"],
+    ["📊 Statistika", "📦 Buyurtmalar"],
+    ["➕ Mahsulot qo‘shish", "✏️ Mahsulotni tahrirlash"],
+    ["👥 Foydalanuvchilar", "⬅️ Foydalanuvchi rejimiga qaytish"],
   ],
   resize_keyboard: true,
 };

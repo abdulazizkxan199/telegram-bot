@@ -2,8 +2,11 @@ const createProductInlineKeyboard = (productId) => {
   return {
     inline_keyboard: [
       [
-        { text: "🛒 Add to Cart", callback_data: `add_cart_${productId}` },
-        { text: "💳 Buy Now", callback_data: `buy_now_${productId}` },
+        { text: "🛒 Savatga qo‘shish", callback_data: `add_cart_${productId}` },
+        {
+          text: "💳 Hozir xarid qilish",
+          callback_data: `buy_now_${productId}`,
+        },
       ],
     ],
   };
@@ -16,7 +19,7 @@ const createCartItemKeyboard = (productId) => {
         { text: "➖", callback_data: `cart_decrease_${productId}` },
         { text: "➕", callback_data: `cart_increase_${productId}` },
       ],
-      [{ text: "🗑️ Remove", callback_data: `cart_remove_${productId}` }],
+      [{ text: "🗑️ O‘chirish", callback_data: `cart_remove_${productId}` }],
     ],
   };
 };
