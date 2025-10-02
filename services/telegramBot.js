@@ -13,7 +13,6 @@ const {
 } = require("../keyboards/mainKeyboard");
 const { createProductInlineKeyboard } = require("../keyboards/productKeyboard");
 
-// User session storage
 const userSessions = {};
 
 function getUserSession(chatId) {

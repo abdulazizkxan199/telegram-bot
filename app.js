@@ -1,24 +1,28 @@
 require("dotenv").config();
-const TelegramBot = require("node-telegram-bot-api");
 const connectDB = require("./config/database");
-const telegramBotService = require("./services/telegramBot");
+const TelegramBot = require("node-telegram-bot-api");
+const TelegramBotService = require("./services/telegramBot"); // Class import
+const express = require("express");
 
 // Connect to MongoDB
 connectDB();
 
-// Initialize bot
+const app = express();
 const bot = new TelegramBot(process.env.BOT_TOKEN, { polling: true });
 
-// Initialize bot service
+// Middleware
+app.use(express.json());
+
+const telegramBotService = new TelegramBotService();
 telegramBotService.init(bot);
 
-// Error handling
-bot.on("polling_error", (error) => {
-  console.error("❌ Polling error:", error);
+app.get("/", (_, res) => {
+  res.json({ status: "Bot is running!" });
 });
 
-process.on("unhandledRejection", (error) => {
-  console.error("❌ Unhandled rejection:", error);
-});
+const PORT = process.env.PORT || 5000;
 
-console.log("🤖 Biftek Bot is running...");
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+  console.log("Bot is running...");
+});
