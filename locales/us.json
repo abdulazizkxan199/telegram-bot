@@ -1,0 +1,13 @@
+{
+  "welcome": "🚀 Biftek onlayn do'koniga xush kelibsiz!\nUshbu bot orqali yangi go'sht va go'sht mahsulotlariga buyurtma berishingiz mumkin!\n\n🚚 Buxoro viloyati va Toshkent shahriga bepul yetkazib berish.\n☎️ +998 55 500 55 52\n🌐 www.biftek.uz\n\nBoshlash uchun quyidagi tugmani bosing.",
+  "main_menu": "Asosiy menyu:",
+  "products": "🥩 Mahsulotlar",
+  "cart": "🛒 Savatcha",
+  "place_order": "📦 Buyurtma berish",
+  "personal_cabinet": "👤 Shaxsiy kabinet",
+  "search": "🔍 Qidiruv",
+  "back": "⬅️ Orqaga",
+  "order_created": "✅ Buyurtma muvaffaqiyatli yaratildi!",
+  "cart_empty": "🛒 Savatingiz bo'sh",
+  "product_added": "✅ Mahsulot savatga qo'shildi"
+}
