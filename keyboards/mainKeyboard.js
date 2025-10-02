@@ -1,34 +1,32 @@
-const { Keyboard } = require("telegram-keyboard");
-
 const mainMenuKeyboard = {
   keyboard: [
-    ["🥩 Products", "🛒 Cart"],
-    ["📦 Place Order", "👤 Personal Cabinet"],
-    ["🔍 Search"],
+    ["🥩 Mahsulotlar", "🛒 Savat"],
+    ["📦 Buyurtma berish", "👤 Shaxsiy kabinet"],
+    ["🔍 Qidiruv"],
   ],
   resize_keyboard: true,
 };
 
 const productsKeyboard = {
   keyboard: [
-    ["📋 All Products"],
-    ["🥩 Meat Products", "🐄 Beef", "🐑 Lamb"],
-    ["⬅️ Back to Menu"],
+    ["📋 Barcha mahsulotlar"],
+    ["🥩 Go‘sht mahsulotlari", "🐄 Mol go‘shti", "🐑 Qo‘y go‘shti"],
+    ["⬅️ Menyuga qaytish"],
   ],
   resize_keyboard: true,
 };
 
 const personalCabinetKeyboard = {
   keyboard: [
-    ["📋 My Orders"],
-    ["📱 Phone Number", "📍 Address"],
-    ["⬅️ Back to Menu"],
+    ["📋 Mening buyurtmalarim"],
+    ["📱 Telefon raqam", "📍 Manzil"],
+    ["⬅️ Menyuga qaytish"],
   ],
   resize_keyboard: true,
 };
 
 const backToMenuKeyboard = {
-  keyboard: [["⬅️ Back to Menu"]],
+  keyboard: [["⬅️ Menyuga qaytish"]],
   resize_keyboard: true,
 };
 

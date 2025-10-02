@@ -1,5 +1,5 @@
 require("dotenv").config();
-const mongoose = require("mongoose");
+const connectDB = require("../config/database");
 const Product = require("../models/Product");
 
 const products = [
@@ -112,7 +112,7 @@ const products = [
 
 async function seedProducts() {
   try {
-    await mongoose.connect(process.env.MONGODB_URI);
+    await connectDB();
     console.log("Connected to MongoDB");
 
     // Clear existing products

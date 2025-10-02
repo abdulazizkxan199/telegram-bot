@@ -58,14 +58,17 @@ class TelegramBotService {
     const chatId = msg.chat.id;
     await userController.getOrCreateUser(msg.from);
 
-    const welcomeMessage = `🚀 Welcome to the ${COMPANY_INFO.name} online store!
-Through this bot, you can order fresh meat and meat products!
+    const welcomeMessage = `🚀 ${
+      COMPANY_INFO.name
+    } onlayn do‘koniga xush kelibsiz!
+Ushbu bot orqali siz yangi go‘sht va go‘sht mahsulotlariga buyurtma bera olasiz!
 
-🚚 Free delivery in ${COMPANY_INFO.deliveryAreas.join(" and ")}.
+🚚 Yetkazib berish bepul: ${COMPANY_INFO.deliveryAreas.join(" va ")}.
 ☎️ ${COMPANY_INFO.phone}
 🌐 ${COMPANY_INFO.website}
 
-To get started, press any button below.`;
+Boshlash uchun pastdagi tugmalardan birini bosing.
+`;
 
     this.bot.sendMessage(chatId, welcomeMessage, {
       reply_markup: mainMenuKeyboard,
@@ -74,15 +77,16 @@ To get started, press any button below.`;
 
   async handleHelp(msg) {
     const chatId = msg.chat.id;
-    const helpMessage = `📖 <b>How to use the bot:</b>
+    const helpMessage = `📖 <b>Botdan foydalanish bo‘yicha qo‘llanma:</b>
 
-🥩 <b>Products</b> - Browse our meat catalog
-🛒 <b>Cart</b> - View your shopping cart
-📦 <b>Place Order</b> - Create a new order
-👤 <b>Personal Cabinet</b> - Manage your profile
-🔍 <b>Search</b> - Find specific products
+🥩 <b>Mahsulotlar</b> - Go‘sht katalogimizni ko‘rib chiqing  
+🛒 <b>Savat</b> - Xarid savatingizni ko‘ring  
+📦 <b>Buyurtma berish</b> - Yangi buyurtma yarating  
+👤 <b>Shaxsiy kabinet</b> - Profilingizni boshqaring  
+🔍 <b>Qidiruv</b> - Maxsus mahsulotlarni toping  
 
-For support: ${COMPANY_INFO.phone}`;
+Qo‘llab-quvvatlash uchun: ${COMPANY_INFO.phone}
+`;
 
     this.bot.sendMessage(chatId, helpMessage, { parse_mode: "HTML" });
   }
@@ -95,12 +99,12 @@ For support: ${COMPANY_INFO.phone}`;
     if (!user || !user.isAdmin) {
       this.bot.sendMessage(
         chatId,
-        "❌ Access denied. Admin privileges required."
+        "❌ Kirish rad etildi. Admin huquqlari talab qilinadi."
       );
       return;
     }
 
-    this.bot.sendMessage(chatId, "👨‍💼 Admin Panel - Coming soon!");
+    this.bot.sendMessage(chatId, "👨‍💼 Admin Panel – Tez orada!");
   }
 
   async handleMessage(msg) {
@@ -126,45 +130,45 @@ For support: ${COMPANY_INFO.phone}`;
 
     // Handle main menu options
     switch (text) {
-      case "🥩 Products":
+      case "🥩 Mahsulotlar":
         return this.showProductsMenu(chatId);
 
-      case "📋 All Products":
+      case "📋 Barcha mahsulotlar":
         return this.showAllProducts(chatId);
 
-      case "🥩 Meat Products":
-        return this.showCategoryProducts(chatId, "Meat Products");
+      case "🥩 Go‘sht mahsulotlari":
+        return this.showCategoryProducts(chatId, "Go‘sht mahsulotlari");
 
-      case "🐄 Beef":
-        return this.showCategoryProducts(chatId, "Beef");
+      case "🐄 Mol go‘shti":
+        return this.showCategoryProducts(chatId, "Mol go‘shti");
 
-      case "🐑 Lamb":
-        return this.showCategoryProducts(chatId, "Lamb");
+      case "🐑 Qo‘y go‘shti":
+        return this.showCategoryProducts(chatId, "Qo‘y go‘shti");
 
-      case "🛒 Cart":
+      case "🛒 Savat":
         return this.showCart(chatId);
 
-      case "📦 Place Order":
+      case "📦 Buyurtma berish":
         return this.startOrderProcess(chatId, session);
 
-      case "👤 Personal Cabinet":
+      case "👤 Shaxsiy kabinet":
         return this.showPersonalCabinet(chatId);
 
-      case "📋 My Orders":
+      case "📋 Mening buyurtmalarim":
         return this.showMyOrders(chatId);
 
-      case "📱 Phone Number":
+      case "📱 Telefon raqam":
         return this.showPhoneNumber(chatId);
 
-      case "📍 Address":
+      case "📍 Manzil":
         return this.showAddress(chatId, session);
 
-      case "🔍 Search":
+      case "🔍 Qidiruv":
         return this.startSearch(chatId, session);
 
-      case "⬅️ Back to Menu":
+      case "⬅️ Menyuga qaytish":
         session.state = USER_STATES.IDLE;
-        return this.bot.sendMessage(chatId, "Main Menu:", {
+        return this.bot.sendMessage(chatId, "Asosiy menyu:", {
           reply_markup: mainMenuKeyboard,
         });
     }
@@ -181,16 +185,20 @@ For support: ${COMPANY_INFO.phone}`;
       session.tempData.phone = phone;
       this.bot.sendMessage(
         chatId,
-        "✅ Thank you! Your order request has been received.\n\nOur manager will contact you shortly to confirm your order.",
+        "✅ Rahmat! Buyurtmangiz qabul qilindi.\n\n📞 Menejerimiz tez orada siz bilan bog‘lanib, buyurtmangizni tasdiqlaydi.",
         {
           reply_markup: mainMenuKeyboard,
         }
       );
       session.state = USER_STATES.IDLE;
     } else {
-      this.bot.sendMessage(chatId, "✅ Phone number updated successfully!", {
-        reply_markup: mainMenuKeyboard,
-      });
+      this.bot.sendMessage(
+        chatId,
+        "✅ Telefon raqamingiz muvaffaqiyatli yangilandi!",
+        {
+          reply_markup: mainMenuKeyboard,
+        }
+      );
     }
   }
 
@@ -215,14 +223,14 @@ For support: ${COMPANY_INFO.phone}`;
         await this.handleClearCart(chatId, query);
       }
     } catch (error) {
-      console.error("Callback query error:", error);
-      this.bot.answerCallbackQuery(query.id, { text: "❌ Error occurred" });
+      console.error("Callback so‘rovida xatolik yuz berdi:", error);
+      this.bot.answerCallbackQuery(query.id, { text: "❌ Xatolik yuz berdi" });
     }
   }
 
   // Product display methods
   async showProductsMenu(chatId) {
-    this.bot.sendMessage(chatId, "Please select a category:", {
+    this.bot.sendMessage(chatId, "Iltimos, kategoriya tanlang:", {
       reply_markup: productsKeyboard,
     });
   }
@@ -233,11 +241,14 @@ For support: ${COMPANY_INFO.phone}`;
     if (products.length === 0) {
       return this.bot.sendMessage(
         chatId,
-        "❌ No products available at the moment."
+        "❌ Hozircha mahsulotlar mavjud emas."
       );
     }
 
-    this.bot.sendMessage(chatId, `📦 All Products (${products.length} items):`);
+    this.bot.sendMessage(
+      chatId,
+      `📦 Barcha mahsulotlar (${products.length} ta): `
+    );
 
     for (const product of products) {
       await this.sendProductCard(chatId, product);
@@ -250,11 +261,11 @@ For support: ${COMPANY_INFO.phone}`;
     if (products.length === 0) {
       return this.bot.sendMessage(
         chatId,
-        `❌ No ${category} products available at the moment.`
+        `❌ Hozircha ${category} mahsulotlari mavjud emas.`
       );
     }
 
-    this.bot.sendMessage(chatId, `📦 ${category} (${products.length} items):`);
+    this.bot.sendMessage(chatId, `${category} (${products.length} ta):`);
 
     for (const product of products) {
       await this.sendProductCard(chatId, product);
@@ -263,10 +274,10 @@ For support: ${COMPANY_INFO.phone}`;
 
   async sendProductCard(chatId, product) {
     const caption = `<b>${product.name}</b>
-<b>Category:</b> ${product.category}
-<b>Price:</b> ${formatPrice(product.price)}
+<b>Kategoriya:</b> ${product.category}
+<b>Narx:</b> ${formatPrice(product.price)}
 
-${product.description || "Fresh and quality product"}`;
+${product.description || "Yangi va sifatli mahsulot"}`;
 
     const keyboard = createProductInlineKeyboard(product._id);
 
@@ -299,14 +310,14 @@ ${product.description || "Fresh and quality product"}`;
     if (cart.items.length === 0) {
       return this.bot.sendMessage(
         chatId,
-        "🛒 Your cart is empty.\n\nBrowse our products to add items!",
+        "🛒 Savatingiz bo‘sh.\n\nMahsulotlarimizni ko‘rib chiqing va savatga qo‘shing!",
         {
           reply_markup: mainMenuKeyboard,
         }
       );
     }
 
-    let cartMessage = "<b>🛒 Your Cart:</b>\n\n";
+    let cartMessage = "<b>🛒 Savatingiz:</b>\n\n";
 
     for (let i = 0; i < cart.items.length; i++) {
       const item = cart.items[i];
@@ -316,13 +327,13 @@ ${product.description || "Fresh and quality product"}`;
       } = ${formatPrice(item.price * item.quantity)}\n\n`;
     }
 
-    cartMessage += `<b>💰 Total: ${formatPrice(cart.totalAmount)}</b>`;
+    cartMessage += `<b>💰 Jami: ${formatPrice(cart.totalAmount)}</b>`;
 
     const keyboard = {
       inline_keyboard: [
         [
-          { text: "✅ Checkout", callback_data: "checkout_cart" },
-          { text: "🗑️ Clear Cart", callback_data: "clear_cart" },
+          { text: "✅ Buyurtma berish", callback_data: "checkout_cart" },
+          { text: "🧹 Savatni tozalash", callback_data: "clear_cart" },
         ],
       ],
     };
@@ -338,13 +349,13 @@ ${product.description || "Fresh and quality product"}`;
 
     try {
       await cartController.addToCart(chatId.toString(), productId);
-      this.bot.answerCallbackQuery(query.id, { text: "✅ Added to cart!" });
+      this.bot.answerCallbackQuery(query.id, { text: "✅ Savatga qo‘shildi!" });
 
       // Show updated cart
       await this.showCart(chatId);
     } catch (error) {
       this.bot.answerCallbackQuery(query.id, {
-        text: "❌ Error adding to cart",
+        text: "❌ Savatga qo‘shishda xatolik yuz berdi",
       });
     }
   }
@@ -355,7 +366,7 @@ ${product.description || "Fresh and quality product"}`;
 
     if (!product) {
       return this.bot.answerCallbackQuery(query.id, {
-        text: "❌ Product not found",
+        text: "❌ Mahsulot topilmadi",
       });
     }
 
@@ -376,14 +387,14 @@ ${product.description || "Fresh and quality product"}`;
     const orderText = formatOrderDetails(order);
     this.bot.sendMessage(
       chatId,
-      "✅ Order created successfully!\n\n" + orderText,
+      "✅ Buyurtma muvaffaqiyatli yaratildi!\n\n" + orderText,
       {
         parse_mode: "HTML",
         reply_markup: mainMenuKeyboard,
       }
     );
 
-    this.bot.answerCallbackQuery(query.id, { text: "✅ Order placed!" });
+    this.bot.answerCallbackQuery(query.id, { text: "✅ Buyurtma berildi!" });
   }
 
   async handleCartIncrease(chatId, data, query) {
@@ -397,7 +408,7 @@ ${product.description || "Fresh and quality product"}`;
         productId,
         item.quantity + 1
       );
-      this.bot.answerCallbackQuery(query.id, { text: "✅ Quantity increased" });
+      this.bot.answerCallbackQuery(query.id, { text: "✅ Miqdor oshirildi" });
       await this.showCart(chatId);
     }
   }
@@ -416,7 +427,9 @@ ${product.description || "Fresh and quality product"}`;
       );
       this.bot.answerCallbackQuery(query.id, {
         text:
-          newQuantity > 0 ? "✅ Quantity decreased" : "🗑️ Removed from cart",
+          newQuantity > 0
+            ? "✅ Miqdor kamaytirildi"
+            : "🗑️ Savatdan olib tashlandi",
       });
       await this.showCart(chatId);
     }
@@ -425,7 +438,9 @@ ${product.description || "Fresh and quality product"}`;
   async handleCartRemove(chatId, data, query) {
     const productId = data.split("_")[2];
     await cartController.removeFromCart(chatId.toString(), productId);
-    this.bot.answerCallbackQuery(query.id, { text: "🗑️ Removed from cart" });
+    this.bot.answerCallbackQuery(query.id, {
+      text: "🗑️ Savatdan olib tashlandi",
+    });
     await this.showCart(chatId);
   }
 
@@ -434,7 +449,7 @@ ${product.description || "Fresh and quality product"}`;
 
     if (cart.items.length === 0) {
       return this.bot.answerCallbackQuery(query.id, {
-        text: "❌ Cart is empty",
+        text: "🛒 Savat bo‘sh",
       });
     }
 
@@ -454,20 +469,20 @@ ${product.description || "Fresh and quality product"}`;
     const orderText = formatOrderDetails(order);
     this.bot.sendMessage(
       chatId,
-      "✅ Order created successfully!\n\n" + orderText,
+      "✅ Buyurtma muvaffaqiyatli yaratildi!\n\n" + orderText,
       {
         parse_mode: "HTML",
         reply_markup: mainMenuKeyboard,
       }
     );
 
-    this.bot.answerCallbackQuery(query.id, { text: "✅ Order placed!" });
+    this.bot.answerCallbackQuery(query.id, { text: "✅ Buyurtma berildi!" });
   }
 
   async handleClearCart(chatId, query) {
     await cartController.clearCart(chatId.toString());
-    this.bot.answerCallbackQuery(query.id, { text: "🗑️ Cart cleared" });
-    this.bot.sendMessage(chatId, "🛒 Cart has been cleared.", {
+    this.bot.answerCallbackQuery(query.id, { text: "🧹 Savat tozalandi" });
+    this.bot.sendMessage(chatId, "🧹 Savat tozalandi.", {
       reply_markup: mainMenuKeyboard,
     });
   }
@@ -476,15 +491,17 @@ ${product.description || "Fresh and quality product"}`;
   async startOrderProcess(chatId, session) {
     session.state = USER_STATES.AWAITING_NAME;
     session.tempData = {};
-    this.bot.sendMessage(chatId, "👤 Please enter your name:");
+    this.bot.sendMessage(chatId, "👤 Iltimos, ismingizni kiriting:");
   }
 
   async handleNameInput(chatId, text, session) {
     session.tempData.name = text;
     session.state = USER_STATES.AWAITING_PHONE;
-    this.bot.sendMessage(chatId, "📱 Please enter your phone number:", {
+    this.bot.sendMessage(chatId, "📱 Iltimos, telefon raqamingizni kiriting:", {
       reply_markup: {
-        keyboard: [[{ text: "Share Phone Number", request_contact: true }]],
+        keyboard: [
+          [{ text: "Telefon raqamni ulashish", request_contact: true }],
+        ],
         resize_keyboard: true,
         one_time_keyboard: true,
       },
@@ -493,7 +510,7 @@ ${product.description || "Fresh and quality product"}`;
 
   // Personal cabinet methods
   async showPersonalCabinet(chatId) {
-    this.bot.sendMessage(chatId, "👤 Personal Cabinet:", {
+    this.bot.sendMessage(chatId, "👤 Shaxsiy kabinet:", {
       reply_markup: personalCabinetKeyboard,
     });
   }
@@ -502,10 +519,13 @@ ${product.description || "Fresh and quality product"}`;
     const orders = await orderController.getUserOrders(chatId.toString());
 
     if (orders.length === 0) {
-      return this.bot.sendMessage(chatId, "📭 You have no orders yet.");
+      return this.bot.sendMessage(
+        chatId,
+        "📭 Sizda hali hech qanday buyurtma yo‘q."
+      );
     }
 
-    this.bot.sendMessage(chatId, `📦 Your Orders (${orders.length}):`);
+    this.bot.sendMessage(chatId, `📦 Buyurtmalaringiz (${orders.length}):`);
 
     for (const order of orders.slice(0, 5)) {
       const orderText = formatOrderDetails(order);
@@ -517,15 +537,21 @@ ${product.description || "Fresh and quality product"}`;
     const user = await userController.getUserById(chatId.toString());
 
     if (user.phone) {
-      this.bot.sendMessage(chatId, `📱 Your phone number: ${user.phone}`);
+      this.bot.sendMessage(chatId, `📱 Telefon raqamingiz: ${user.phone}`);
     } else {
-      this.bot.sendMessage(chatId, "📱 Please share your phone number:", {
-        reply_markup: {
-          keyboard: [[{ text: "Share Phone Number", request_contact: true }]],
-          resize_keyboard: true,
-          one_time_keyboard: true,
-        },
-      });
+      this.bot.sendMessage(
+        chatId,
+        "📱 Iltimos, telefon raqamingizni ulashing:",
+        {
+          reply_markup: {
+            keyboard: [
+              [{ text: "Telefon raqamni ulashish", request_contact: true }],
+            ],
+            resize_keyboard: true,
+            one_time_keyboard: true,
+          },
+        }
+      );
     }
   }
 
@@ -535,10 +561,13 @@ ${product.description || "Fresh and quality product"}`;
     if (user.address) {
       this.bot.sendMessage(
         chatId,
-        `📍 Your address: ${user.address}\n\nTo update, send a new address.`
+        `📍 Manzilingiz: ${user.address}\n\nYangilash uchun, yangi manzil yuboring.`
       );
     } else {
-      this.bot.sendMessage(chatId, "📍 Please enter your delivery address:");
+      this.bot.sendMessage(
+        chatId,
+        "📍 Iltimos, yetkazib berish manzilingizni kiriting:"
+      );
     }
 
     session.state = USER_STATES.AWAITING_ADDRESS;
@@ -547,7 +576,7 @@ ${product.description || "Fresh and quality product"}`;
   async handleAddressInput(chatId, text, session) {
     await userController.updateUserAddress(chatId.toString(), text);
 
-    this.bot.sendMessage(chatId, "✅ Address updated successfully!", {
+    this.bot.sendMessage(chatId, "✅ Manzil muvaffaqiyatli yangilandi!", {
       reply_markup: mainMenuKeyboard,
     });
 
@@ -557,7 +586,7 @@ ${product.description || "Fresh and quality product"}`;
   // Search methods
   async startSearch(chatId, session) {
     session.state = USER_STATES.SEARCHING;
-    this.bot.sendMessage(chatId, "🔍 Please enter a search keyword:");
+    this.bot.sendMessage(chatId, "🔍 Iltimos, qidiruv uchun so‘z kiriting:");
   }
 
   async handleSearch(chatId, text, session) {
@@ -566,10 +595,13 @@ ${product.description || "Fresh and quality product"}`;
     if (products.length === 0) {
       this.bot.sendMessage(
         chatId,
-        "❌ No products found matching your search."
+        "❌ Qidiruvingiz bo‘yicha mahsulot topilmadi."
       );
     } else {
-      this.bot.sendMessage(chatId, `🔍 Found ${products.length} product(s):`);
+      this.bot.sendMessage(
+        chatId,
+        `🔍 ${products.length} ta mahsulot topildi:`
+      );
 
       for (const product of products) {
         await this.sendProductCard(chatId, product);
@@ -577,7 +609,7 @@ ${product.description || "Fresh and quality product"}`;
     }
 
     session.state = USER_STATES.IDLE;
-    this.bot.sendMessage(chatId, "What would you like to do next?", {
+    this.bot.sendMessage(chatId, "➡️ Keyingi qadamda nima qilmoqchisiz?", {
       reply_markup: mainMenuKeyboard,
     });
   }

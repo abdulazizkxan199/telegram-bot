@@ -1,15 +1,14 @@
-const Order = require("../models/Order");
-const Cart = require("../models/Cart");
+const Orders = require("../models/Orders");
 
 class OrderController {
   async getNextOrderId() {
-    const lastOrder = await Order.findOne().sort({ orderId: -1 });
+    const lastOrder = await Orders.findOne().sort({ orderId: -1 });
     return lastOrder ? lastOrder.orderId + 1 : 1;
   }
 
   async createOrder(orderData) {
     const orderId = await this.getNextOrderId();
-    const order = new Order({
+    const order = new Orders({
       ...orderData,
       orderId,
     });
@@ -20,7 +19,7 @@ class OrderController {
   async createOrderFromProduct(userId, productId, productData, customerInfo) {
     const orderId = await this.getNextOrderId();
 
-    const order = new Order({
+    const order = new Orders({
       orderId,
       userId,
       products: [
@@ -44,7 +43,7 @@ class OrderController {
   async createOrderFromCart(userId, cart, customerInfo) {
     const orderId = await this.getNextOrderId();
 
-    const order = new Order({
+    const order = new Orders({
       orderId,
       userId,
       products: cart.items.map((item) => ({
@@ -70,15 +69,15 @@ class OrderController {
   }
 
   async getOrderById(orderId) {
-    return await Order.findOne({ orderId });
+    return await Orders.findOne({ orderId });
   }
 
   async getUserOrders(userId, limit = 10) {
-    return await Order.find({ userId }).sort({ createdAt: -1 }).limit(limit);
+    return await Orders.find({ userId }).sort({ createdAt: -1 }).limit(limit);
   }
 
   async updateOrderStatus(orderId, status) {
-    return await Order.findOneAndUpdate(
+    return await Orders.findOneAndUpdate(
       { orderId },
       { status, updatedAt: Date.now() },
       { new: true }
