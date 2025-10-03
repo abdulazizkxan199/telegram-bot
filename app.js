@@ -17,14 +17,11 @@ async function start() {
     let bot;
 
     if (process.env.NODE_ENV === "production") {
-      // ✅ Webhook URL path (tokenni yashirin qilish uchun /webhook/ dan foydalanamiz)
       const webhookUrlPath = `/webhook/${process.env.BOT_TOKEN}`;
       const fullWebhookUrl = `${process.env.APP_URL}${webhookUrlPath}`;
 
-      // ✅ Bot obyektini yaratish
       bot = new TelegramBot(process.env.BOT_TOKEN, { webHook: true });
 
-      // ✅ Webhookni set qilish
       try {
         await bot.setWebHook(fullWebhookUrl);
         console.log(`Webhook successfully set to: ${fullWebhookUrl}`);
@@ -32,28 +29,23 @@ async function start() {
         console.error("🔴 ERROR setting WebHook:", error.message);
       }
 
-      // ✅ Webhook route (Telegram POST qiladigan joy)
       app.post(webhookUrlPath, (req, res) => {
         bot.processUpdate(req.body);
-        res.sendStatus(200); // Juda muhim!
+        res.sendStatus(200);
       });
 
       console.log("Bot is running in webhook mode (production)...");
     } else {
-      // ✅ Development: polling mode
       bot = new TelegramBot(process.env.BOT_TOKEN, { polling: true });
       console.log("Bot is running in polling mode (development)...");
     }
 
-    // ✅ Sizning xizmatlaringiz
     TelegramBotService.init(bot);
 
-    // ✅ Test uchun GET route
     app.get("/", (_, res) => {
       res.json({ status: "Bot server is running! 🚀" });
     });
 
-    // ✅ Express serverini ishga tushirish
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT} 🚀`);
       console.log(`Available at: ${process.env.APP_URL}`);

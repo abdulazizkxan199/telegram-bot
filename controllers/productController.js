@@ -15,7 +15,7 @@ class ProductController {
 
   async searchProducts(query) {
     return await Product.find({
-      $text: { $search: query },
+      name: { $regex: query, $options: "i" },
       inStock: true,
     });
   }

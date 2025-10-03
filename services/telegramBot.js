@@ -52,6 +52,36 @@ class TelegramBotService {
 
     // Callback query handler
     this.bot.on("callback_query", (query) => this.handleCallbackQuery(query));
+
+    // Inline query handler
+    this.bot.on("inline_query", (query) => {
+      console.log("INLINE QUERY KELDI:", query); // 👈 Terminalda ko‘ring
+      this.handleInlineQuery(query);
+    });
+  }
+
+  // inline query natija — faqat product id yuboradi
+  async handleInlineQuery(query) {
+    let products;
+
+    if (query.query.toLowerCase() === "all") {
+      products = await productController.getAllProducts();
+    } else {
+      products = await productController.getProductsByCategory(query.query);
+    }
+
+    const results = products.map((p, idx) => ({
+      type: "article",
+      id: String(p._id || idx),
+      title: p.name,
+      description: `${p.price} UZS`,
+      thumb_url: p.imageUrl || "https://via.placeholder.com/100",
+      input_message_content: {
+        message_text: `product:${p._id}`, // faqat product id ni yuboramiz
+      },
+    }));
+
+    await this.bot.answerInlineQuery(query.id, results, { cache_time: 0 });
   }
 
   async handleStart(msg) {
@@ -115,6 +145,20 @@ Qo‘llab-quvvatlash uchun: ${COMPANY_INFO.phone}
     // Skip if it's a command
     if (!text || text.startsWith("/")) return;
 
+    if (msg.text && msg.text.startsWith("product:")) {
+      const productId = msg.text.split(":")[1];
+
+      await this.bot.deleteMessage(chatId, msg.message_id).catch(() => {});
+
+      const product = await productController.getProductById(productId);
+
+      if (!product) {
+        return this.bot.sendMessage(chatId, "Mahsulot topilmadi ❌");
+      }
+
+      await this.sendProductCard(chatId, product);
+    }
+
     // Handle different states
     if (session.state === USER_STATES.AWAITING_NAME) {
       return this.handleNameInput(chatId, text, session);
@@ -131,19 +175,48 @@ Qo‘llab-quvvatlash uchun: ${COMPANY_INFO.phone}
     // Handle main menu options
     switch (text) {
       case "🥩 Mahsulotlar":
-        return this.showProductsMenu(chatId);
+        return this.bot.sendMessage(chatId, "📦 Mahsulotlarni qidirish:", {
+          reply_markup: {
+            inline_keyboard: [
+              [
+                {
+                  text: "📋 Barcha mahsulotlar",
+                  switch_inline_query_current_chat: "all",
+                },
+              ],
+              [
+                {
+                  text: "🥩 Go‘sht mahsulotlari",
+                  switch_inline_query_current_chat: "Meat Products",
+                },
+              ],
+              [
+                {
+                  text: "🐄 Mol go‘shti",
+                  switch_inline_query_current_chat: "Beef",
+                },
+              ],
+              [
+                {
+                  text: "🐑 Qo‘y go‘shti",
+                  switch_inline_query_current_chat: "Lamb",
+                },
+              ],
+            ],
+          },
+        });
 
-      case "📋 Barcha mahsulotlar":
-        return this.showAllProducts(chatId);
+      // case "📋 Barcha mahsulotlar":
+      //   return this.showAllProducts(chatId);
 
-      case "🥩 Go‘sht mahsulotlari":
-        return this.showCategoryProducts(chatId, "Go‘sht mahsulotlari");
+      // case "🥩 Go‘sht mahsulotlari":
+      //   return this.showCategoryProducts(chatId, "Meat Products");
 
-      case "🐄 Mol go‘shti":
-        return this.showCategoryProducts(chatId, "Mol go‘shti");
+      // case "🐄 Mol go‘shti":
+      //   return this.showCategoryProducts(chatId, "Lamb");
 
-      case "🐑 Qo‘y go‘shti":
-        return this.showCategoryProducts(chatId, "Qo‘y go‘shti");
+      // case "🐑 Qo‘y go‘shti":
+      //   return this.showCategoryProducts(chatId, "Beef");
 
       case "🛒 Savat":
         return this.showCart(chatId);
@@ -203,27 +276,43 @@ Qo‘llab-quvvatlash uchun: ${COMPANY_INFO.phone}
   }
 
   async handleCallbackQuery(query) {
-    const chatId = query.message.chat.id;
-    const data = query.data;
-
     try {
-      if (data.startsWith("add_cart_")) {
-        await this.handleAddToCart(chatId, data, query);
-      } else if (data.startsWith("buy_now_")) {
-        await this.handleBuyNow(chatId, data, query);
-      } else if (data.startsWith("cart_increase_")) {
-        await this.handleCartIncrease(chatId, data, query);
-      } else if (data.startsWith("cart_decrease_")) {
-        await this.handleCartDecrease(chatId, data, query);
-      } else if (data.startsWith("cart_remove_")) {
-        await this.handleCartRemove(chatId, data, query);
-      } else if (data === "checkout_cart") {
-        await this.handleCheckoutCart(chatId, query);
-      } else if (data === "clear_cart") {
-        await this.handleClearCart(chatId, query);
+      const data = query.data;
+      let chatId = null;
+
+      if (query.message) {
+        chatId = query.message.chat.id;
+      } else if (query.inline_message_id) {
+        console.log("INLINE CALLBACK:", data, query.inline_message_id);
       }
+
+      if (!data) {
+        return this.bot.answerCallbackQuery(query.id, {
+          text: "❌ Noto‘g‘ri tugma",
+        });
+      }
+
+      // Endi tugmalarni handle qilish
+      if (data.startsWith("add_cart_")) {
+        if (chatId) await this.handleAddToCart(chatId, data, query);
+      } else if (data.startsWith("buy_now_")) {
+        if (chatId) await this.handleBuyNow(chatId, data, query);
+      } else if (data.startsWith("cart_increase_")) {
+        if (chatId) await this.handleCartIncrease(chatId, data, query);
+      } else if (data.startsWith("cart_decrease_")) {
+        if (chatId) await this.handleCartDecrease(chatId, data, query);
+      } else if (data.startsWith("cart_remove_")) {
+        if (chatId) await this.handleCartRemove(chatId, data, query);
+      } else if (data === "checkout_cart") {
+        if (chatId) await this.handleCheckoutCart(chatId, query);
+      } else if (data === "clear_cart") {
+        if (chatId) await this.handleClearCart(chatId, query);
+      }
+
+      // Callback javobini qaytarish
+      await this.bot.answerCallbackQuery(query.id);
     } catch (error) {
-      console.error("Callback so‘rovida xatolik yuz berdi:", error);
+      console.error("❌ Callback so‘rovida xatolik:", error);
       this.bot.answerCallbackQuery(query.id, { text: "❌ Xatolik yuz berdi" });
     }
   }
