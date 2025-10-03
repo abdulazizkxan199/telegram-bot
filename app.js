@@ -22,7 +22,7 @@ async function start() {
       const fullWebhookUrl = `${process.env.APP_URL}${webhookUrlPath}`;
 
       // ✅ Bot obyektini yaratish
-      bot = new TelegramBot(process.env.BOT_TOKEN);
+      bot = new TelegramBot(process.env.BOT_TOKEN, { webHook: true });
 
       // ✅ Webhookni set qilish
       try {
