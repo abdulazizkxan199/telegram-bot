@@ -7,7 +7,6 @@ const express = require("express");
 const app = express();
 app.use(express.json());
 
-// Connect to MongoDB
 async function start() {
   try {
     await connectDB();
