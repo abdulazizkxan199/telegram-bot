@@ -41,7 +41,7 @@ async function start() {
       console.log("Bot is running in webhook mode (production)...");
     } else {
       // ✅ Development: polling mode
-      bot = new TelegramBot(process.env.BOT_TOKEN, { polling: true });
+      bot = new TelegramBot(process.env.BOT_TOKEN);
       console.log("Bot is running in polling mode (development)...");
     }
 
