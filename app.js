@@ -3,11 +3,15 @@ const connectDB = require("./config/database");
 const TelegramBot = require("node-telegram-bot-api");
 const TelegramBotService = require("./services/telegramBot");
 const express = require("express");
+const router = require("./router/router");
+const cors = require("cors");
 
 const app = express();
 app.use(express.json());
 
 const PORT = process.env.PORT || 3000;
+
+app.use(cors());
 
 async function start() {
   try {
@@ -45,6 +49,8 @@ async function start() {
     app.get("/", (_, res) => {
       res.json({ status: "Bot server is running! 🚀" });
     });
+
+    app.use("/api", router);
 
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT} 🚀`);
