@@ -24,7 +24,7 @@ async function start() {
       const webhookUrlPath = `/webhook/${process.env.BOT_TOKEN}`;
       const fullWebhookUrl = `${process.env.APP_URL}${webhookUrlPath}`;
 
-      bot = new TelegramBot(process.env.BOT_TOKEN, { webHook: true });
+      bot = new TelegramBot(process.env.BOT_TOKEN, { webHook: false });
 
       try {
         await bot.setWebHook(fullWebhookUrl);
