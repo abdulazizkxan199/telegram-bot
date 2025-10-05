@@ -1,8 +1,7 @@
 module.exports = {
   COMPANY_INFO: {
-    name: "Biftek",
+    name: "Jasur shop",
     phone: "+998 55 500 55 52",
-    website: "www.biftek.uz",
     deliveryAreas: ["Bukhara region", "Tashkent city"],
   },
 

@@ -88,14 +88,11 @@ class TelegramBotService {
     const chatId = msg.chat.id;
     await userController.getOrCreateUser(msg.from);
 
-    const welcomeMessage = `🚀 ${
-      COMPANY_INFO.name
-    } onlayn do‘koniga xush kelibsiz!
-Ushbu bot orqali siz yangi go‘sht va go‘sht mahsulotlariga buyurtma bera olasiz!
+    const welcomeMessage = `🚀 ${COMPANY_INFO.name} onlayn do‘koniga xush kelibsiz!
+Ushbu bot orqali siz  Mebel, Idishlar, Oshxona jihozlari, Maishiy texnika larga  buyurtma bera olasiz!
 
-🚚 Yetkazib berish bepul: ${COMPANY_INFO.deliveryAreas.join(" va ")}.
+🚚 Yetkazib berish bepul: Qarshi shahri boʻylab!.
 ☎️ ${COMPANY_INFO.phone}
-🌐 ${COMPANY_INFO.website}
 
 Boshlash uchun pastdagi tugmalardan birini bosing.
 `;
