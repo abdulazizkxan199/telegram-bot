@@ -186,20 +186,26 @@ Qo‘llab-quvvatlash uchun: ${COMPANY_INFO.phone}
               ],
               [
                 {
-                  text: "🥩 Go‘sht mahsulotlari",
-                  switch_inline_query_current_chat: "Meat Products",
+                  text: "Idishlar",
+                  switch_inline_query_current_chat: "Idishlar",
                 },
               ],
               [
                 {
-                  text: "🐄 Mol go‘shti",
-                  switch_inline_query_current_chat: "Beef",
+                  text: "Maishiy tehnika",
+                  switch_inline_query_current_chat: "Maishiy tehnika",
                 },
               ],
               [
                 {
-                  text: "🐑 Qo‘y go‘shti",
-                  switch_inline_query_current_chat: "Lamb",
+                  text: "Mebel",
+                  switch_inline_query_current_chat: "Mebel",
+                },
+              ],
+              [
+                {
+                  text: "Oshxona texnikalari",
+                  switch_inline_query_current_chat: "Oshxona texnikalari",
                 },
               ],
             ],

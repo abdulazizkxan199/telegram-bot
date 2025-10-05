@@ -2,7 +2,7 @@ const Product = require("../models/Product");
 
 class ProductController {
   async getAllProducts() {
-    return await Product.find({ inStock: true });
+    return await Product.find({ inStock: true }).limit(40);
   }
 
   async getProductsByCategory(category) {
