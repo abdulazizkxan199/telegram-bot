@@ -93,6 +93,7 @@ Ushbu bot orqali siz  Mebel, Idishlar, Oshxona jihozlari, Maishiy texnika larga 
 
 🚚 Yetkazib berish bepul: Qarshi shahri boʻylab!.
 ☎️ ${COMPANY_INFO.phone}
+@jasur_chinnilari
 
 Boshlash uchun pastdagi tugmalardan birini bosing.
 `;

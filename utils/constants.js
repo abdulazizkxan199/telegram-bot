@@ -1,8 +1,7 @@
 module.exports = {
   COMPANY_INFO: {
     name: "Jasur shop",
-    phone: "+998 55 500 55 52",
-    deliveryAreas: ["Bukhara region", "Tashkent city"],
+    phone: "+998 97 300 13 93",
   },
 
   ORDER_STATUS: {
