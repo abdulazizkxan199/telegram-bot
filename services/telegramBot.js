@@ -174,7 +174,7 @@ Qo‘llab-quvvatlash uchun: ${COMPANY_INFO.phone}
 
     // Handle main menu options
     switch (text) {
-      case "🥩 Mahsulotlar":
+      case "📦 Mahsulotlar":
         return this.bot.sendMessage(chatId, "📦 Mahsulotlarni qidirish:", {
           reply_markup: {
             inline_keyboard: [

@@ -1,6 +1,6 @@
 const mainMenuKeyboard = {
   keyboard: [
-    ["🥩 Mahsulotlar", "🛒 Savat"],
+    ["📦 Mahsulotlar", "🛒 Savat"],
     ["📦 Buyurtma berish", "👤 Shaxsiy kabinet"],
     ["🔍 Qidiruv"],
   ],
