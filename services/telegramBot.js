@@ -190,8 +190,8 @@ Qo‘llab-quvvatlash uchun: ${COMPANY_INFO.phone}
               ],
               [
                 {
-                  text: "Maishiy tehnika",
-                  switch_inline_query_current_chat: "Maishiy tehnika",
+                  text: "Maishiy texnika",
+                  switch_inline_query_current_chat: "Maishiy texnika",
                 },
               ],
               [
